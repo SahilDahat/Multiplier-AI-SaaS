@@ -5,7 +5,7 @@ import { UserButton } from "@clerk/nextjs"
 export default function DashboardPage() {
   return (
     <div>
-      <Button variant="secondary">Click Me!</Button>
+      <Button>Click Me!</Button>
       <UserButton afterSignOutUrl="/"/>
     </div>
   )
