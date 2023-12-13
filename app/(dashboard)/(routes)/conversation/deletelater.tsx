@@ -1,14 +1,9 @@
 "use client";
 
 import * as z from "zod";
-//zod is a TypeScript-first schema declaration and validation library. 
-//It allows you to define data schemas and perform runtime validation on your data based on these schemas.
-
+//import axios from "axios";
 import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-//import axios from "axios";
 //import { useState } from "react";
 //import { toast } from "react-hot-toast";
 //import { useRouter } from "next/navigation";
@@ -18,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 //import { cn } from "@/lib/utils";
 //import { Loader } from "@/components/loader";
@@ -27,7 +22,6 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 //import { useProModal } from "@/hooks/use-pro-modal";
 
 import { formSchema } from "./constants";
-
 const ConversationPage = () => {
   //const router = useRouter();
   //const proModal = useProModal();
@@ -70,34 +64,52 @@ const ConversationPage = () => {
 
   return ( 
     <div>
-      <Heading title="Conversation" description="Our most advanced conversation model."
-        icon={MessageSquare} iconColor="text-violet-500" bgColor="bg-violet-500/10"/>
-
+      <Heading
+        title="Conversation"
+        description="Our most advanced conversation model."
+        icon={MessageSquare}
+        iconColor="text-violet-500"
+        bgColor="bg-violet-500/10"
+      />
       <div className="px-4 lg:px-8">
         <div>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} 
-                className="rounded-lg border w-full p-4 px-3 md:px-6 focus-within:shadow-sm grid gap-2 
-                grid-cols-12">
-              
-              <FormField name="prompt" render = {({ field }) => (
+            <form 
+              onSubmit={form.handleSubmit(onSubmit)} 
+              className="
+                rounded-lg 
+                border 
+                w-full 
+                p-4 
+                px-3 
+                md:px-6 
+                focus-within:shadow-sm
+                grid
+                grid-cols-12
+                gap-2
+              "
+            >
+              <FormField
+                name="prompt"
+                render={({ field }) => (
                   <FormItem className="col-span-12 lg:col-span-10">
                     <FormControl className="m-0 p-0">
-                      <Input className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                        disabled={isLoading} placeholder="How do I calculate the radius of a circle?" 
-                        {...field}/>
+                      <Input
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        disabled={isLoading} 
+                        placeholder="How do I calculate the radius of a circle?" 
+                        {...field}
+                      />
                     </FormControl>
                   </FormItem>
-                )}/>
-                
-              <Button className="col-span-12 lg:col-span-2 w-full" type="submit" 
-                disabled={isLoading} size="icon"> Generate
+                )}
+              />
+              <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
+                Generate
               </Button>
             </form>
           </Form>
-
         </div>
-        
         <div className="space-y-4 mt-4">
             {/*
           {isLoading && (
