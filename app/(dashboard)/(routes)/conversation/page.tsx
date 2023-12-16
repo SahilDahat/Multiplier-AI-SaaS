@@ -8,30 +8,32 @@ import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-//import axios from "axios";
-//import { useState } from "react";
+import axios from "axios";
+import { useState } from "react";
 //import { toast } from "react-hot-toast";
-//import { useRouter } from "next/navigation";
-//import { ChatCompletionRequestMessage } from "openai";
+import { useRouter } from "next/navigation";
+import ChatCompletionRequestMessage, { OpenAI }  from "openai";
 
-//import { BotAvatar } from "@/components/bot-avatar";
+import { BotAvatar } from "@/components/bot-avatar";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-//import { cn } from "@/lib/utils";
-//import { Loader } from "@/components/loader";
-//import { UserAvatar } from "@/components/user-avatar";
-//import { Empty } from "@/components/ui/empty";
+import { cn } from "@/lib/utils";
+import { Loader } from "@/components/loader";
+import { UserAvatar } from "@/components/user-avatar";
+import { Empty } from "@/components/empty";
 //import { useProModal } from "@/hooks/use-pro-modal";
 
 import { formSchema } from "./constants";
 
+const openai = new OpenAI();
+
 const ConversationPage = () => {
-  //const router = useRouter();
+  const router = useRouter();
   //const proModal = useProModal();
-  //const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,29 +46,27 @@ const ConversationPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-  }
 
-  /*
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
-      const newMessages = [...messages, userMessage];
-      
+      const completion: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
+      /*
+      const completion  = await openai.chat.completions.create({
+        messages: [{ "role": "system", "content" : "You are a helpful assistant." }],
+        model: "gpt-3.5-turbo",
+      })
+      */
+
+      const newMessages = [...messages, completion];
       const response = await axios.post('/api/conversation', { messages: newMessages });
-      setMessages((current) => [...current, userMessage, response.data]);
+      setMessages((current) => [...current, completion, response.data]);
       
       form.reset();
     } catch (error: any) {
-      if (error?.response?.status === 403) {
-        proModal.onOpen();
-      } else {
-        toast.error("Something went wrong.");
-      }
+      console.log(error);
     } finally {
       router.refresh();
     }
   }
-*/
 
   return ( 
     <div>
@@ -99,7 +99,6 @@ const ConversationPage = () => {
         </div>
         
         <div className="space-y-4 mt-4">
-            {/*
           {isLoading && (
             <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
               <Loader />
@@ -119,12 +118,11 @@ const ConversationPage = () => {
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 <p className="text-sm">
-                  {message.content}
+                  {/*message*/}
                 </p>
               </div>
             ))}
           </div>
-          */}
         </div>
       </div>
     </div>
